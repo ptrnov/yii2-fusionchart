@@ -1,0 +1,29 @@
+{
+	"name": "ptrnov/yii2-fusionchart",
+	"description": "Chart",
+	"type": "yii2-extension",
+	"keywords": ["yii2","ptr","nov","extension","chart","fusionchart","grafik","diagram"],
+	"license": "BSD-3-Clause",
+	"authors": [
+		{
+			"name": "Piter Novian",
+			"email": "ptr.nov@gmail.com"
+		}
+	],	
+	"support": {
+		"issues": "https://github.com/ptrnov/yii2-fusionchart/issues",
+		"source": "https://github.com/ptrnov/yii2-fusionchart"
+	"require": {
+		"yiisoft/yii2": "*",
+	},
+	"autoload": {
+		"psr-4": {
+			"ptrnov\\fusionchart\\": ""
+		}
+	},
+	"extra": {
+		"branch-alias": {
+			"dev-master": "1.0.x-dev"
+		}
+	}
+}
