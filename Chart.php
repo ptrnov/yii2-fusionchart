@@ -4,10 +4,11 @@ namespace  ptrnov\fusionchart;
 use Yii;
 use yii\helpers\Json;
 use yii\data\ArrayDataProvider;
+use yii\helpers\ArrayHelper;
 use yii\base\Widget;
 use yii\helpers\Html;
 use yii\web\View;
-   
+use yii\base\Exception;
    
 /**
  * This is Chart Class 
@@ -29,46 +30,57 @@ class Chart extends Widget
 	const CHAT_SHOWBORDER = 'showBorder';	
 	const CHAT_SHOWCANVASBORDER = 'showCanvasBorder';	
 	
-	public $dataModel=[];
+	public $dataArray='';
+	public $dataField='';
 	public $type='';
 	public $renderid='';
 	public $chartOption='';
 	
 	
-	public function run()	{
-		
-		 $html='<div id="'.$this->renderid.'"></div>';
-			echo $html;
+	public function run()	{		
+		$html='<div id="'.$this->renderid.'"></div>';
+		echo $html;
 		$this->registerClientScript($this->renderid);
+		
 		//return self::chartOption($this->chartOption);
-		//return self::aryProvider($this->dataModel);
+		print_r(self::setProvider($this->dataArray,$this->dataField));
 	}	
 	
 	 /**
      * @var array $dataModel, data value chart
+	 * field['label','value'], normaly value is numeric
      * Defaults to `array`.
 	 * Convert Array to Json 
      */
-	private static function aryProvider($aryModel=[]){
-		//LABEL
-		foreach($aryModel[0] as $key => $value){
-			//$dataLabel=['data'=>['label'=>$key,'value'=>$value]];
-			$dataLabel[]=['label'=>$key,'value'=>$value];
-			//$data=$data . $data;
-		} 
-		//CONTENT
-		foreach($aryModel as $key => $value){
-			$nilai=$key;
-			//$dataContent[]=['label'=>$key,'value'=>$value['username']];
-			$dataContent[]=['label'=>$value['username'],'value'=>$value['id']];
-		}
-		$data=['data'=>$dataContent];
-		
-		//return Json::encode($data);
+	private static function setProvider($aryModel=[],$field=[]){
+		//error hendling is not array
+		if (!is_array($aryModel)) {
+             throw new Exception("Invalid dataArray, please source array 'dataArray'=>[array]");
+        }
+		//error hendling is not array
+		if (!is_array($field)) {
+             throw new Exception("Invalid dataField, check your array 'dataField'=>['fieldName1','fieldName2']");
+        }
+		$dataProvider= new ArrayDataProvider([
+			'allModels'=>$aryModel,
+			// 'allModels'=>\Yii::$app->db->createCommand("	
+				// SELECT id, username FROM userss
+			// ")->queryAll(), 
+		]);	
+		$dataProviderModel=$dataProvider->getModels();
+		foreach($dataProviderModel as $key => $value){
+			//error hendling is offset
+			if (isset($value[$field[0]]) && isset($value[$field[1]])){
+				$dataContent[]=["label"=>$value[$field[0]],"value"=>$value[$field[1]]];
+			}else{
+				//return '[]';
+				 throw new Exception("Invalid dataField, please check Column Name 'dataField'=>['wrongName','trueName']");
+			}
+			
+		}; 		
 		return Json::encode($dataContent);
 	}
-	
-	
+		
 	 /**
      * @var array $chartOption, data properties chart
      */
@@ -123,16 +135,15 @@ class Chart extends Widget
 					"dataFormat": "json",
 					"dataSource": {
 					    "chart":'.self::chartOption($this->chartOption).',					 
-						"data":'.self::aryProvider($this->dataModel).'					   
+						"data": '.self::setProvider($this->dataArray,$this->dataField).'	   
 					}
 				});
-
 				revenueChart.render();
 			});
 		';
 
         $view = $this->getView();
-       $view->registerJs($script, View::POS_READY);
+       $view->registerJs($script, View::POS_END);
     }
 	
 }
