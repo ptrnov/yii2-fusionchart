@@ -13,8 +13,9 @@
 	"support": {
 		"issues": "https://github.com/ptrnov/yii2-fusionchart/issues",
 		"source": "https://github.com/ptrnov/yii2-fusionchart"
+	},
 	"require": {
-		"yiisoft/yii2": "*",
+		"yiisoft/yii2": "*"
 	},
 	"autoload": {
 		"psr-4": {

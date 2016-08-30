@@ -29,7 +29,7 @@ Once the extension is installed, simply use it in your code by  :
 
 ```php
 	/**
-	 * RUNING IN FUSIONCHART TYPE
+	 * RUNNING IN FUSIONCHART TYPE
 	 * column2d,column3d,bar2d
 	 * Type,  Ref: http://www.fusioncharts.com/dev/demos/chart-gallery.html
 	 * color, Ref: http://dmcritchie.mvps.org/excel/colors.htm

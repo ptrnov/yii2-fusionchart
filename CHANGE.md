@@ -7,6 +7,7 @@ Change Log: `yii2-fusionchart`
 2. Source data from model,sqlcomment,manual Array.
 3. chartOption
 4. type : column2d,column3d,bar2d (Same Array Model)
+5. 
 	
 **Date:** 31-Agustus-2016
 - Initial release 
