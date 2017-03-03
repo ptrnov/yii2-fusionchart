@@ -132,8 +132,8 @@ class Chart extends Widget
 			 var revenueChart = new FusionCharts({
 					"type": "'.$this->type.'",					
 					"renderAt": "'.$id.'",
-					"width": $this->width,
-					"height": $this->height,
+					"width":'. $this->width .',
+					"height":'. $this->height .',
 					"dataFormat": "json",
 					"dataSource": {
 					    "chart":'.self::chartOption($this->chartOption).',					 
