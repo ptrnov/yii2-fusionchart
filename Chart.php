@@ -35,6 +35,8 @@ class Chart extends Widget
 	public $type='';
 	public $renderid='';
 	public $chartOption='';
+	public $width = 500;
+	public $height = 300;
 	
 	
 	public function run()	{		
@@ -43,7 +45,7 @@ class Chart extends Widget
 		$this->registerClientScript($this->renderid);
 		
 		//return self::chartOption($this->chartOption);
-		print_r(self::setProvider($this->dataArray,$this->dataField));
+		//print_r(self::setProvider($this->dataArray,$this->dataField));
 	}	
 	
 	 /**
@@ -130,8 +132,8 @@ class Chart extends Widget
 			 var revenueChart = new FusionCharts({
 					"type": "'.$this->type.'",					
 					"renderAt": "'.$id.'",
-					"width": "500",
-					"height": "300",
+					"width": $this->width,
+					"height": $this->height,
 					"dataFormat": "json",
 					"dataSource": {
 					    "chart":'.self::chartOption($this->chartOption).',					 
