@@ -20,11 +20,14 @@ use yii\web\AssetBundle;
 class ChartAsset extends AssetBundle
 {
 	public $sourcePath = '@vendor/ptrnov/yii2-fusionchart/assets';
+	public $css=[
+		'css/ptr-load.css',
+	];
     public $js = [
        'js/fusioncharts.js',		
        'js/fusioncharts.widgets.js',
        'js/fusioncharts.charts.js',
        'js/fusioncharts.gantt.js',
    ];
-	public $jsOptions = ['position' => \yii\web\View::POS_BEGIN];
+	public $jsOptions = ['position' => \yii\web\View::POS_END];
 }
