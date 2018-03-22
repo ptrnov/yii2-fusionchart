@@ -64,6 +64,68 @@ Once the extension is installed, simply use it in your code by  :
 				'testChart'=>$testChart
 			]);
 	}
+	 
+	//EXAMPLE 2 
+	
+	public function actionIndex()
+    {
+		$testChart= Chart::Widget([
+			'urlSource'=> 'https://your_api',
+			'metode'=>'POST',
+			'param'=>[
+				'BULAN'=>date("m"),
+				'TAHUN'=>date("Y")
+			],
+			'userid'=>'piter@lukison.com',
+			'dataArray'=>'[]',//$actionChartGrantPilotproject,				//array scource model or manual array or sqlquery
+			'dataField'=>'[]',//['label','value'],							//field['label','value'], normaly value is numeric
+			'type'=>'msline',//msline//'bar3d',//'gantt',					//Chart Type 
+			'renderid'=>'msline-sales-weekly',								//unix name render
+			'autoRender'=>true,
+			'width'=>'100%',
+			'height'=>'300px',
+			//'chartOption'=> api server side
+		]);	 
+			
+		return $this->render('index',[
+				'testChart'=>$testChart
+			]);
+	} 
+	 
+	
+	//=== UPDATE FUSIONCHAT WITH AJAX  ===
+	$this->registerJs("
+		$(document).ready(function (){
+			var renderid = document.getElementById('msline-sss-hour-3daystrafik');
+			var spnIdRenderid= renderid.getElementsByTagName('span');
+			var chartUpdate= spnIdRenderid[0].id; 
+			//console.log(chartUpdate);	
+			var initUpdateChart = document.getElementById(chartUpdate);					
+			$.ajax({
+				url: 'https://your_api',
+				type: 'POST',
+				data: {'TGL':'".date("Y-m-d")."'},
+				dataType:'json',
+				success: function(data) {
+					//===UPDATE CHART ====
+					if (data['dataset'][0]['data']!==''){							
+						initUpdateChart.setChartData({
+							chart: data['chart'],
+							categories:data['categories'],
+							dataset: data['dataset']
+						});	
+					}else{
+						initUpdateChart.setChartData({
+							chart: data['chart'],
+							categories:data['categories'],
+							data:[{}]
+						});						
+					}					
+				}			   
+			}); 
+		});
+	",$this::POS_END);
+	
 	
 	//views index
 	use ptrnov\fusionchart\ChartAsset;
