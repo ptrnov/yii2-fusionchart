@@ -43,13 +43,16 @@ class Chart extends Widget
 	const CHAT_ALIGNCAPTIONWITHCANVAS = 'alignCaptionWithCanvas';	
 	
 	public $urlSource='';
+	public $metode='GET';			//new
+	public $param=[];				//new
+	public $autoResize=false;		//new
 	public $dataArray='';
 	public $dataField='';
 	public $type='';
 	public $renderid='';
 	public $chartOption='';
-	public $width='';
-	public $height='';
+	public $width=500;
+	public $height=400;
 	public $userid='';
 	public $autoRender=true;
 	
@@ -227,15 +230,18 @@ class Chart extends Widget
 				//data:"id_user='.$this->userid.'",
 				$script = '
 						$(document).ready(function () {
+							var myJsonString = '.json_encode($this->param).';
+								//console.log(myJsonString);
 							var  jsonData= $.ajax({
 								  url: "'.$this->urlSource.'",
-								  type: "GET",
+								  type: "'.$this->metode.'",
+								  data: myJsonString,
 								  dataType:"json",
 								  async: false,
 								  global: false
 							}).responseText;		  
 							var myDataChart= jsonData;
-							//	console.log(myDataChart);
+							//	console.log(myDataChart);						
 							
 								 var revenueChart = new FusionCharts({
 									"type": "'.$this->type.'",					
@@ -325,6 +331,16 @@ class Chart extends Widget
 										}
 									}
 								});
+								
+								//==AUTO RESIZE ===
+								if ("'.$this->autoResize.'"==true){
+									console.log("autoResize");
+									var dataParsing=JSON.parse(myDataChart);
+									var dataList =dataParsing["dataset"][0]["data"];
+									var dataCnt =dataList.length;
+									var cnt=dataCnt<5?5:dataCnt;
+									revenueChart.resizeTo("100%",(cnt*30)+"px");
+								};
 						
 						'.$renderSetting.'
 															
